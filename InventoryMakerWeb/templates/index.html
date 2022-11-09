@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
+{% if user.is_authenticated %}
+<h1>Welcome, {{user.username}}</h1>
+<a href="logout">Logout</a>
+<a href="settings">Settings</a>
+<a href="data">See Inventories</a>
+{% else %}
+<h1>Welcome to Inventory Maker</h1>
+<a href="register">Register</a>
+<a href="login">Login</a>
+{% endif %}
+<!-- <head>
 <title>Inventory Maker</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -141,7 +151,7 @@ input {
   {% for todo in todos reversed %}
   <li>{{todo.title | title}} <span class="close"><a style="text-decoration: none; color: black;" href="delete/{{todo.id}}">Delete</a></span></li>
   {% endfor %}
-</ul>
+</ul> 
 
-</body>
+</body> -->
 </html>
