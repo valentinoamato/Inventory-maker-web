@@ -1,26 +1,14 @@
 
 
 from django.shortcuts import render, redirect
-from .models import Todo
+from .models import inventory, items
 from django.contrib.auth.models import User , auth
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+
 def index(request):
-    todo = Todo.objects.all()
-    if request.method == 'POST':
-        new_todo = Todo(
-            title = request.POST['title']
-        )
-        new_todo.save()
-        return redirect('/')
-
-    return render(request, 'index.html', {'todos': todo})
-
-def delete(request, pk):
-    todo = Todo.objects.get(id=pk)
-    todo.delete()
-    return redirect('/')
+    return render(request, 'index.html')
 
 def register(request):
     if request.method == 'POST':
@@ -60,5 +48,25 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+@login_required
+def data(request):
+    print(request.user)
+    print(User.objects.get(id=request.user.id))
+    print(type(User.objects.get(id=request.user.id)))
+    print(type(request.user))
+    ivt = inventory.objects.filter(user=request.user)
+    if request.method == 'POST':
+        new_ivt = inventory(title = request.POST['title'],
+        user = User.objects.get(id=request.user.id))
+        new_ivt.save()
+        return redirect('/data')
+
+    return render(request, 'data.html', {'ivts': ivt})
+
+def delete(request, pk):
+    ivt = inventory.objects.get(id=pk)
+    ivt.delete()
+    return redirect('/data')
 
 
