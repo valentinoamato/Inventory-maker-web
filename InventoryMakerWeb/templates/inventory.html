@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Inventory maker web.</title>
+<style>
+  h5{
+  
+      color: red;
+  
+  }
+  
+  </style>
+  {% for message in messages %}
+  <h5>{{message}}</h5>
+  {% endfor %}
+
+</head>
+<body>
+
+<div>
+  <h2 style="margin:5px">Inventory {{ivt.title}} has the following items:</h2>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <input type="text" name="name"  placeholder="Name...">
+    <button type="submit">Add</button>
+  </form>
+</div>
+
+<ul>
+  {% for itm in itms reversed %}
+  <li>{{itm.title | title}} <span><a href="delete/{{ivt.id}}/{{itm.id}}">Delete</a></span></li>
+  {% endfor %}
+</ul> 
+
+</body> 
+
+
+</html>

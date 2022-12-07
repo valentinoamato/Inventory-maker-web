@@ -7,7 +7,7 @@ class inventory(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
-        return self.title, self.user
+        return f"{self.title}-{self.user}"
         
 
 class items(models.Model):

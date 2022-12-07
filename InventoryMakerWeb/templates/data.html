@@ -1,6 +1,17 @@
 <html>
 <head>
 <title>Inventory Maker</title>
+<!-- <style>
+  h5{
+  
+      color: red;
+  
+  }
+  
+  </style>
+  {% for message in messages %}
+  <h5>{{message}}</h5>
+  {% endfor %} -->
 
 </head>
 <body>
@@ -16,7 +27,7 @@
 
 <ul>
   {% for ivt in ivts reversed %}
-  <li>{{ivt.title | title}} <span><a href="delete/{{ivt.id}}">Delete</a></span></li>
+  <li>{{ivt.title | title}} <span><a href="UpdateIvt/{{ivt.id}}/">Delete</a></span></li>
   {% endfor %}
 </ul> 
 

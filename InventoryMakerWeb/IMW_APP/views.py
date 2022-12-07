@@ -25,7 +25,7 @@ def register(request):
                 user.save()
                 return redirect('login')
         else: 
-            messages.info(request, 'Password are not equal.')
+            messages.info(request, 'Passwords are not equal.')
             return redirect('register')
     else:
         return render(request, 'register.html')
@@ -38,7 +38,7 @@ def login(request):
         
         if user is not None:
             auth.login(request, user)
-            return redirect('/')
+            return redirect('index')
         else:
             messages.info(request, 'Invalid credentials')
             return redirect('login')
@@ -47,26 +47,55 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('/')
+    return redirect('index')
 
 @login_required
 def data(request):
-    print(request.user)
-    print(User.objects.get(id=request.user.id))
-    print(type(User.objects.get(id=request.user.id)))
-    print(type(request.user))
-    ivt = inventory.objects.filter(user=request.user)
+    # print(request.user)
+    # print(User.objects.get(id=request.user.id))
+    # print(type(User.objects.get(id=request.user.id)))
+    # print(type(request.user))
+    ivts = inventory.objects.filter(user=request.user)
     if request.method == 'POST':
         new_ivt = inventory(title = request.POST['title'],
         user = User.objects.get(id=request.user.id))
         new_ivt.save()
-        return redirect('/data')
+        return redirect('data')
 
-    return render(request, 'data.html', {'ivts': ivt})
+    return render(request, 'data.html', {'ivts': ivts})
 
-def delete(request, pk):
-    ivt = inventory.objects.get(id=pk)
-    ivt.delete()
-    return redirect('/data')
+def UpdateIvt(request, IvtPk):
+    ivt = inventory.objects.get(id=IvtPk)
+    if request.user.id == ivt.user_id:
+        ivt.delete()
+    # else:
+    #     messages.info(request, 'Access denied!')
+    return redirect('data')
+
+def UpdateItm(request, IvtPk, ItmPk):
+    ivt = inventory.objects.get(id=IvtPk)
+    itm = items.objects.get(id=ItmPk)
+    itm.delete()
+    return redirect('data')
+
+def SeeInventory(request, ivt):
+    ivt = inventory.objects.get(title=ivt, user = User.objects.get(id=request.user.id))
+    print(ivt.title,ivt.id,ivt.user_id)
+    print(type(ivt.user.id))
+    print(type(ivt.id))
+    print(type(ivt.title))
+
+    itms = items.objects.filter(ivt=ivt)
+    if request.method == 'POST':
+        new_itm = items(ivt=ivt,name=request.POST['name'],description='this is an item')
+        new_itm.save()
+    # print(ivt)
+    # print(itms)
+    return render(request, 'inventory.html', {'ivt': ivt,'itms':itms})
+    
+
+def SeeItem(request, ivt, itm):
+    print(ivt,itm)
+    return render(request, 'login.html')
 
 
