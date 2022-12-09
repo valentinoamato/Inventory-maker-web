@@ -5,6 +5,7 @@ from .models import inventory, items
 from django.contrib.auth.models import User , auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 
 def index(request):
@@ -41,20 +42,18 @@ def login(request):
             return redirect('index')
         else:
             messages.info(request, 'Invalid credentials')
-            return redirect('login')
-
+            return redirect('index')
     return render(request, 'login.html')
 
 def logout(request):
     auth.logout(request)
     return redirect('index')
 
+def settings(request):
+    return render(request, 'settings.html')
+
 @login_required
 def data(request):
-    # print(request.user)
-    # print(User.objects.get(id=request.user.id))
-    # print(type(User.objects.get(id=request.user.id)))
-    # print(type(request.user))
     ivts = inventory.objects.filter(user=request.user)
     if request.method == 'POST':
         new_ivt = inventory(title = request.POST['title'],
@@ -68,34 +67,27 @@ def UpdateIvt(request, IvtPk):
     ivt = inventory.objects.get(id=IvtPk)
     if request.user.id == ivt.user_id:
         ivt.delete()
-    # else:
-    #     messages.info(request, 'Access denied!')
     return redirect('data')
 
 def UpdateItm(request, IvtPk, ItmPk):
     ivt = inventory.objects.get(id=IvtPk)
     itm = items.objects.get(id=ItmPk)
     itm.delete()
-    return redirect('data')
+    print(ivt,IvtPk,ivt.title)
+    return redirect('SeeInventory',ivt=ivt.title)
 
 def SeeInventory(request, ivt):
     ivt = inventory.objects.get(title=ivt, user = User.objects.get(id=request.user.id))
-    print(ivt.title,ivt.id,ivt.user_id)
-    print(type(ivt.user.id))
-    print(type(ivt.id))
-    print(type(ivt.title))
-
     itms = items.objects.filter(ivt=ivt)
     if request.method == 'POST':
         new_itm = items(ivt=ivt,name=request.POST['name'],description='this is an item')
         new_itm.save()
-    # print(ivt)
-    # print(itms)
     return render(request, 'inventory.html', {'ivt': ivt,'itms':itms})
     
 
 def SeeItem(request, ivt, itm):
-    print(ivt,itm)
     return render(request, 'login.html')
+
+
 
 

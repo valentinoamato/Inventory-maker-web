@@ -1,3 +1,5 @@
 .env
+.pot
+migrations
 **/__pycache__
-./InventoryMakerWeb/**/__pycache__
+db.sqlite3

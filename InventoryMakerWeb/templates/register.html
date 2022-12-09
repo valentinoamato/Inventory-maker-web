@@ -15,7 +15,7 @@ h5{
 <h5>{{message}}</h5>
 {% endfor %}
 
-<form method="POST" action="register">
+<form method="POST" >
 {% csrf_token %}
 <p>Email:</p>
 <input type="email" name="email"/>

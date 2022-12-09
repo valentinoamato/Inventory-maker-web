@@ -27,10 +27,10 @@
 
 <ul>
   {% for itm in itms reversed %}
-  <li>{{itm.title | title}} <span><a href="delete/{{ivt.id}}/{{itm.id}}">Delete</a></span></li>
+  <li>{{itm.name | title}} <span><a href="{% url 'UpdateItm' ivt.id itm.id %}">Delete</a></span></li>
   {% endfor %}
 </ul> 
-
+<a href="{% url 'data'%}">Go back.</a>
 </body> 
 
 

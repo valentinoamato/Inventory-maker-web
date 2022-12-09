@@ -8,7 +8,7 @@ h3{
 {% for message in messages %}
 <h3>{{message}}</h3>
 {% endfor %}
-<form action="login" method="POST">
+<form  method="POST" >
 {% csrf_token %}
 <p>Email:</p>
 <input type="email" name="email"/>
