@@ -2,7 +2,7 @@
 Register
 
 </h1>
-
+<!-- 
 <style>
 h5{
 
@@ -15,7 +15,7 @@ h5{
 <h5>{{message}}</h5>
 {% endfor %}
 
-<form method="POST" >
+<form method="post" >
 {% csrf_token %}
 <p>Email:</p>
 <input type="email" name="email"/>
@@ -24,4 +24,27 @@ h5{
 <p>Repeat password:</p>
 <input type="password" name="password2"/><br/><br/>
 <input type="submit"/>
-</form>
+</form> -->
+
+<body>
+    <form  method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+<div class="fieldWrapper">
+{{ form.email.errors }}
+<label for="{{ form.email.id_for_label }}">Enter your email:<br></label>
+{{ form.email }}
+</div>
+<div class="fieldWrapper">
+{{ form.password1.errors }}
+<label for="{{ form.password1.id_for_label }}">Enter your password:<br></label>
+{{ form.password1 }}
+</div>
+<div class="fieldWrapper">
+{{ form.password2.errors }}
+<label for="{{ form.password2.id_for_label }}">Repeat your password:<br></label>
+{{ form.password2 }}
+</div>
+        <input type="submit" value="Submit">
+    </form>
+</body>

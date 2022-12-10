@@ -3,11 +3,11 @@ from django.conf import settings
 
 # Create your models here.
 class inventory(models.Model):
-    title = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
-        return f"{self.title}-{self.user}"
+        return f"{self.name}-{self.user}"
         
 
 class items(models.Model):

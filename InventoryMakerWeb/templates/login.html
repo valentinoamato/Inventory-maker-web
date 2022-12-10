@@ -1,5 +1,5 @@
 <html>
-<h1>
+<!-- <h1>
 <style>
 h3{
     color: red;
@@ -8,7 +8,7 @@ h3{
 {% for message in messages %}
 <h3>{{message}}</h3>
 {% endfor %}
-<form  method="POST" >
+<form  method="post" >
 {% csrf_token %}
 <p>Email:</p>
 <input type="email" name="email"/>
@@ -20,5 +20,26 @@ h3{
 
 </h1>
 
+
+</html> -->
+
+<h1>Log In.</h1>
+<body>
+    <form  method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+<div class="fieldWrapper">
+{{ form.email.errors }}
+<label for="{{ form.email.id_for_label }}">Enter your email:<br></label>
+{{ form.email }}
+</div>
+<div class="fieldWrapper">
+{{ form.password1.errors }}
+<label for="{{ form.password1.id_for_label }}">Enter your password:<br></label>
+{{ form.password1 }}
+</div>
+        <input type="submit" value="Submit">
+    </form>
+</body>
 
 </html>

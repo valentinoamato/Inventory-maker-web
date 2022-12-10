@@ -1,5 +1,25 @@
 <html>
     <body>
         <p>This is the settings page.</p>
+        <form  method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+<div class="fieldWrapper">
+    {{ form.email.errors }}
+    <label for="{{ form.email.id_for_label }}">Enter your email:<br></label>
+    {{ form.email }}
+</div>
+<div class="fieldWrapper">
+    {{ form.password1.errors }}
+    <label for="{{ form.password1.id_for_label }}">Your password:<br></label>
+    {{ form.password1 }}
+</div>
+<div class="fieldWrapper">
+    {{ form.password2.errors }}
+    <label for="{{ form.password2.id_for_label }}">Repeat your password:<br></label>
+    {{ form.password2 }}
+</div>
+            <input type="submit" value="Submit">
+        </form>
     </body>
 </html>
