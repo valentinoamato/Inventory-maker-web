@@ -11,8 +11,10 @@ urlpatterns = [
     path('data/',views.data,name='data'),
     path('data/<str:ivt>/',views.SeeInventory,name='SeeInventory'),
     path('data/<str:ivt>/<str:itm>/',views.SeeItem,name='SeeItem'),
-    path('UpdateIvt/<str:IvtPk>/', views.UpdateIvt, name='UpdateIvt'),
-    path('UpdateItm/<str:IvtPk>/<str:ItmPk>', views.UpdateItm, name='UpdateItm'),
+    path('UpdateIvt/<str:IvtPk>/', views.DeleteIvt, name='DeleteIvt'),
+    path('UpdateItm/<str:IvtPk>/<str:ItmPk>', views.DeleteItm, name='DeleteItm'),
+    path('UpdateIvt/<str:IvtPk>/<str:NewName>/', views.UpdateIvt, name='UpdateIvt'),
+    path('UpdateItm/<str:IvtPk>/<str:ItmPk>/<str:NewName>/', views.UpdateItm, name='UpdateItm'),
 
 
 ]

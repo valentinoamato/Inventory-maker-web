@@ -17,9 +17,27 @@
 <body>
 
 <h1>Inventory {{ivt.name}} has the following items:</h1>
+
+
+
+<!-- <ul>
+  {% for itm in itms reversed %}
+  <li>{{itm.name | title}} <span><a href="{% url 'DeleteItm' ivt.id itm.id %}">Delete</a></span></li>
+  {% endfor %}
+</ul>  -->
+
 <form  method="post">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+  {% csrf_token %}
+  <ul>
+    {% for itm in itms reversed %}
+    <li>
+      {{itm.name | title}} <span><a href="{% url 'DeleteItm' ivt.id itm.id %}">Delete</a></span>
+      <input type="radio" id="{{itm.name}}" name="list" value="HTML">
+      <label for="{{itm.name}}">{{itm.name | title}}</label><br>
+    </li>
+    {% endfor %}
+  </ul> 
+  {{ form.non_field_errors }}
 <div class="fieldWrapper">
 {{ form.name.errors }}
 <label for="{{ form.name.id_for_label }}">Enter the name for the new item:<br></label>
@@ -29,11 +47,6 @@
 </form>
 
 
-<ul>
-  {% for itm in itms reversed %}
-  <li>{{itm.name | title}} <span><a href="{% url 'UpdateItm' ivt.id itm.id %}">Delete</a></span></li>
-  {% endfor %}
-</ul> 
 <a href="{% url 'data'%}">Go back.</a>
 </body> 
 

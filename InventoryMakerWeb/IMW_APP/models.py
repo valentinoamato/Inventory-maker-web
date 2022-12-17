@@ -9,6 +9,11 @@ class inventory(models.Model):
     def __str__(self):
         return f"{self.name}-{self.user}"
         
+    def GetNames(ivt):
+        return ivt.name
+    
+    def GetIds(ivt):
+        return ivt.id
 
 class items(models.Model):
     ivt = models.ForeignKey(inventory, on_delete=models.CASCADE)

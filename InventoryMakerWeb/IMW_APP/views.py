@@ -67,14 +67,31 @@ def settings(request):
 @login_required
 def data(request):
     ivts = inventory.objects.filter(user=request.user)
+
     if request.method == 'POST':
-        form = ItmForm(request.POST)
-        new_ivt = inventory(name = request.POST['name'],
-        user = User.objects.get(id=request.user.id))
-        new_ivt.save()
-    else:
-        form = IvtForm()
-    return render(request, 'data.html', {'form': form, 'ivts': ivts})
+        names = list(map(inventory.GetNames,ivts))
+        ids = list(map(inventory.GetIds,ivts))
+
+        if 'create' in request.POST and request.POST['name'] and request.POST['name'] not in names:
+            new_ivt = inventory(name = request.POST['name'],
+            user = User.objects.get(id=request.user.id))
+            new_ivt.save()
+        
+        elif 'mod' in request.POST and int(request.POST.get('list',False)) in ids and request.POST['name'] and request.POST['name'] not in names:
+            modIvt = inventory.objects.get(id = request.POST['list'],
+            user = User.objects.get(id=request.user.id))
+            modIvt.name = request.POST['name']
+            modIvt.save()
+
+        elif 'del' in request.POST and int(request.POST.get('list',False)) in ids:
+            ivt = inventory.objects.get(id=request.POST['list'])
+            if request.user.id == ivt.user_id:
+                ivt.delete()
+
+        return redirect('data')
+
+    return render(request, 'data.html', { 'ivts': ivts})
+    
 
 def SeeInventory(request, ivt):
     ivt = inventory.objects.get(name=ivt, user = User.objects.get(id=request.user.id))
@@ -90,18 +107,24 @@ def SeeInventory(request, ivt):
 def SeeItem(request, ivt, itm):
     return render(request, 'login.html')
 
-def UpdateIvt(request, IvtPk):
+def DeleteIvt(request, IvtPk):
     ivt = inventory.objects.get(id=IvtPk)
     if request.user.id == ivt.user_id:
         ivt.delete()
     return redirect('data')
 
-def UpdateItm(request, IvtPk, ItmPk):
+def DeleteItm(request, IvtPk, ItmPk):
     ivt = inventory.objects.get(id=IvtPk)
     itm = items.objects.get(id=ItmPk)
     itm.delete()
     print(ivt,IvtPk,ivt.name)
     return redirect('SeeInventory',ivt=ivt.name)
+
+def UpdateIvt(request):
+    pass
+
+def UpdateItm(request):
+    pass
 
 
 

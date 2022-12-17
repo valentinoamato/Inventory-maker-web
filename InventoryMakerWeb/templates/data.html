@@ -25,22 +25,35 @@
   </form>
 </div> -->
 <h1>These are your inventories:</h1>
+
+
+
+
 <form  method="post">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+  {% csrf_token %}
+  <ul>
+    {% for ivt in ivts reversed %}
+    <li>
+
+      <input type="radio" id="{{ivt.name}}" name="list" value="{{ivt.id}}">
+      <label for="{{ivt.name}}"><a href="{% url 'SeeInventory' ivt.name %}">{{ivt.name | title}}</a></label><br>
+    </li>
+    {% endfor %}
+  </ul> 
+  <!-- {{ form.non_field_errors }}
 <div class="fieldWrapper">
 {{ form.name.errors }}
 <label for="{{ form.name.id_for_label }}">Enter the name for the new inventory:<br></label>
 {{ form.name }}
-</div>
-<input type="submit" value="Submit">
+</div> -->
+<input type="text" placeholder="Enter a name..." name="name"><br><br>
+
+<input type="submit" value="Delete." name="del">
+<input type="submit" value="Create." name="create">
+<input type="submit" value="Change name." name="mod">
 </form>
 
-<ul>
-  {% for ivt in ivts reversed %}
-  <li><a href="{% url 'SeeInventory' ivt.name %}">{{ivt.name | title}}</a> <a href="{% url 'UpdateIvt' ivt.id %}">Delete</a></li>
-  {% endfor %}
-</ul> 
+
 <a href="{% url 'index'%}">Go back.</a>
 </body> 
 
