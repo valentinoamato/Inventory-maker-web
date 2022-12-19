@@ -69,8 +69,50 @@ def data(request):
     ivts = inventory.objects.filter(user=request.user)
 
     if request.method == 'POST':
-        names = list(map(inventory.GetNames,ivts))
-        ids = list(map(inventory.GetIds,ivts))
+        names = list(map(inventory.GetName,ivts))
+        ids = list(map(inventory.GetId,ivts))
+
+        if 'create' in request.POST and request.POST['name'] and request.POST['name'] not in names:
+            new_ivt = inventory(name = request.POST['name'],
+            user = User.objects.get(id=request.user.id))
+            if request.POST['description']:
+                new_ivt.description = request.POST['description']
+            new_ivt.save()
+        
+        elif 'mod' in request.POST and int(request.POST.get('list',False)) in ids:
+            modIvt = inventory.objects.get(
+            id = request.POST['list'],
+            user = User.objects.get(id=request.user.id))
+            if request.POST['name'] and request.POST['name'] not in names:
+                modIvt.name = request.POST['name']
+            if request.POST['description']:
+                modIvt.description = request.POST['description']
+            modIvt.save()
+
+        elif 'del' in request.POST and int(request.POST.get('list',False)) in ids:
+            ivt = inventory.objects.get(id=request.POST['list'])
+            if request.user.id == ivt.user_id:
+                ivt.delete()
+
+        return redirect('data')
+
+    return render(request, 'data.html', { 'ivts': ivts})
+    
+
+def SeeInventory(request, ivt):
+    ivt = inventory.objects.get(name=ivt, user = User.objects.get(id=request.user.id))
+    itms = items.objects.filter(ivt=ivt)
+    # if request.method == 'POST':
+    #     form = IvtForm(request.POST)
+    #     new_itm = items(ivt=ivt,name=request.POST['name'],description='this is an item')
+    #     new_itm.save()
+    # else:
+    #     form = IvtForm()
+    
+
+    if request.method == 'POST':
+        names = list(map(items.GetName,itms))
+        ids = list(map(items.GetId,itms))
 
         if 'create' in request.POST and request.POST['name'] and request.POST['name'] not in names:
             new_ivt = inventory(name = request.POST['name'],
@@ -90,19 +132,7 @@ def data(request):
 
         return redirect('data')
 
-    return render(request, 'data.html', { 'ivts': ivts})
-    
-
-def SeeInventory(request, ivt):
-    ivt = inventory.objects.get(name=ivt, user = User.objects.get(id=request.user.id))
-    itms = items.objects.filter(ivt=ivt)
-    if request.method == 'POST':
-        form = IvtForm(request.POST)
-        new_itm = items(ivt=ivt,name=request.POST['name'],description='this is an item')
-        new_itm.save()
-    else:
-        form = IvtForm()
-    return render(request, 'inventory.html', {'form': form, 'ivt': ivt,'itms':itms})
+    return render(request, 'inventory.html', {'ivt': ivt,'itms':itms})
     
 def SeeItem(request, ivt, itm):
     return render(request, 'login.html')
