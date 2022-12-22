@@ -99,38 +99,49 @@ def data(request):
     return render(request, 'data.html', { 'ivts': ivts})
     
 
+@login_required
 def SeeInventory(request, ivt):
     ivt = inventory.objects.get(name=ivt, user = User.objects.get(id=request.user.id))
     itms = items.objects.filter(ivt=ivt)
-    # if request.method == 'POST':
-    #     form = IvtForm(request.POST)
-    #     new_itm = items(ivt=ivt,name=request.POST['name'],description='this is an item')
-    #     new_itm.save()
-    # else:
-    #     form = IvtForm()
-    
+
 
     if request.method == 'POST':
         names = list(map(items.GetName,itms))
         ids = list(map(items.GetId,itms))
 
         if 'create' in request.POST and request.POST['name'] and request.POST['name'] not in names:
-            new_ivt = inventory(name = request.POST['name'],
-            user = User.objects.get(id=request.user.id))
+            new_ivt = items(name = request.POST['name'],
+            ivt = ivt)
+
+            if request.POST['quantity']:
+                new_ivt.quantity = request.POST['quantity']
+
+            if request.POST['unity']:
+                new_ivt.unity = request.POST['unity']
+
+            if request.POST['description']:
+                new_ivt.description = request.POST['description']
             new_ivt.save()
         
-        elif 'mod' in request.POST and int(request.POST.get('list',False)) in ids and request.POST['name'] and request.POST['name'] not in names:
-            modIvt = inventory.objects.get(id = request.POST['list'],
-            user = User.objects.get(id=request.user.id))
-            modIvt.name = request.POST['name']
+        elif 'mod' in request.POST and int(request.POST.get('list',False)) in ids:
+            modIvt = items.objects.get(
+            id = request.POST['list'],
+            ivt = ivt)
+            if request.POST['name'] and request.POST['name'] not in names:
+                modIvt.name = request.POST['name']
+            if request.POST['quantity']:
+                modIvt.quantity = request.POST['quantity']
+            if request.POST['unity']:
+                modIvt.unity = request.POST['unity']
+            if request.POST['description']:
+                modIvt.description = request.POST['description']
             modIvt.save()
 
         elif 'del' in request.POST and int(request.POST.get('list',False)) in ids:
-            ivt = inventory.objects.get(id=request.POST['list'])
-            if request.user.id == ivt.user_id:
-                ivt.delete()
+            itm = items.objects.get(id=request.POST['list'],ivt=ivt)
+            itm.delete()
 
-        return redirect('data')
+        return redirect('SeeInventory',ivt.name)
 
     return render(request, 'inventory.html', {'ivt': ivt,'itms':itms})
     

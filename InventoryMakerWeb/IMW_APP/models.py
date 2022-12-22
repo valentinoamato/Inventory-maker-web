@@ -20,7 +20,7 @@ class items(models.Model):
     ivt = models.ForeignKey(inventory, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000,null=True)
-    quantity = models.IntegerField(null=True)
+    quantity = models.FloatField(null=True)
     unity = models.CharField(max_length=50,null=True)
     
     def GetName(itm):

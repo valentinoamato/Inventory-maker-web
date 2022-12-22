@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Inventory maker web.</title>
+<title>Inventory Maker</title>
 <!-- <style>
   h5{
   
@@ -14,41 +14,51 @@
   {% endfor %} -->
 
 </head>
+
+
 <body>
 
-<h1>Inventory {{ivt.name}} has the following items:</h1>
+  <h1>These are the items in inventory {{ivt.name}}:</h1>
+  
+  <form  method="post">
+    {% csrf_token %}
+    <table> 
+      <tr>
+        <th>Name.</th>
+        <th>Quantity.</th>
+        <th>Unity.</th>
+        <th>Description.</th>
+      </tr>
 
-
-
-<!-- <ul>
-  {% for itm in itms reversed %}
-  <li>{{itm.name | title}} <span><a href="{% url 'DeleteItm' ivt.id itm.id %}">Delete</a></span></li>
-  {% endfor %}
-</ul>  -->
-
-<form  method="post">
-  {% csrf_token %}
-  <ul>
-    {% for itm in itms reversed %}
-    <li>
-      {{itm.name | title}} <span><a href="{% url 'DeleteItm' ivt.id itm.id %}">Delete</a></span>
-      <input type="radio" id="{{itm.name}}" name="list" value="HTML">
-      <label for="{{itm.name}}">{{itm.name | title}}</label><br>
-    </li>
-    {% endfor %}
-  </ul> 
-  {{ form.non_field_errors }}
-<div class="fieldWrapper">
-{{ form.name.errors }}
-<label for="{{ form.name.id_for_label }}">Enter the name for the new item:<br></label>
-{{ form.name }}
-</div>
-<input type="submit" value="Submit">
-</form>
-
-
-<a href="{% url 'data'%}">Go back.</a>
-</body> 
-
-
+      {% for itm in itms reversed %}
+      <tr>
+        <td>
+        <input type="radio" id="{{itm.name}}" name="list" value="{{itm.id}}">
+        <label for="{{itm.name}}">{{itm.name | title}}</label><br>
+        </td>
+        <td>
+          {{itm.quantity}}
+        </td>
+        <td>
+          {{itm.unity}}
+        </td>
+        <td>
+          {{itm.description | title}}
+        </td>
+      </tr>
+      {% endfor %}
+    </table> 
+  
+  <input type="text" placeholder="Enter a name..." name="name">
+  <input type="number" step="any" placeholder="Enter a quantity..." name="quantity">
+  <input type="text" placeholder="Enter an unity..." name="unity">
+  <input type="text" placeholder="Enter a description..." name="description"><br><br>
+  
+  <input type="submit" value="Delete." name="del">
+  <input type="submit" value="Create." name="create">
+  <input type="submit" value="Modify." name="mod">
+  </form>
+  
+  <a href="{% url 'data'%}">Go back.</a>
+  </body> 
 </html>
