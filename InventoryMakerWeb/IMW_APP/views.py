@@ -144,28 +144,7 @@ def SeeInventory(request, ivt):
         return redirect('SeeInventory',ivt.name)
 
     return render(request, 'inventory.html', {'ivt': ivt,'itms':itms})
-    
-def SeeItem(request, ivt, itm):
-    return render(request, 'login.html')
 
-def DeleteIvt(request, IvtPk):
-    ivt = inventory.objects.get(id=IvtPk)
-    if request.user.id == ivt.user_id:
-        ivt.delete()
-    return redirect('data')
-
-def DeleteItm(request, IvtPk, ItmPk):
-    ivt = inventory.objects.get(id=IvtPk)
-    itm = items.objects.get(id=ItmPk)
-    itm.delete()
-    print(ivt,IvtPk,ivt.name)
-    return redirect('SeeInventory',ivt=ivt.name)
-
-def UpdateIvt(request):
-    pass
-
-def UpdateItm(request):
-    pass
 
 
 
