@@ -1,8 +1,10 @@
+<title>Inventory Maker</title>
+<body>
 <h1>
 Register
 
 </h1>
-<!-- 
+
 <style>
 h5{
 
@@ -15,18 +17,8 @@ h5{
 <h5>{{message}}</h5>
 {% endfor %}
 
-<form method="post" >
-{% csrf_token %}
-<p>Email:</p>
-<input type="email" name="email"/>
-<p>Password:</p>
-<input type="password" name="password"/>
-<p>Repeat password:</p>
-<input type="password" name="password2"/><br/><br/>
-<input type="submit"/>
-</form> -->
 
-<body>
+
     <form  method="post">
         {% csrf_token %}
         {{ form.non_field_errors }}

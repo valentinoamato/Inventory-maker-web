@@ -7,7 +7,6 @@ urlpatterns = [
     path('register/',views.register,name='register'),
     path('login/',views.login,name='login'),
     path('logout/',views.logout,name='logout'),
-    path('settings/',views.settings,name='settings'),
     path('data/',views.data,name='data'),
     path('data/<str:ivt>/',views.SeeInventory,name='SeeInventory'),
 

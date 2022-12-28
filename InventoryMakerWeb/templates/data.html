@@ -1,7 +1,10 @@
 <html>
 <head>
 <title>Inventory Maker</title>
-<!-- <style>
+<body>
+
+  <h1>These are your inventories:</h1>
+<style>
   h5{
   
       color: red;
@@ -11,14 +14,12 @@
   </style>
   {% for message in messages %}
   <h5>{{message}}</h5>
-  {% endfor %} -->
+  {% endfor %}
 
 </head>
 
 
-<body>
 
-  <h1>These are your inventories:</h1>
   
   <form  method="post">
     {% csrf_token %}
